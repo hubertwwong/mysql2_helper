@@ -45,7 +45,7 @@ describe Mysql2Helper do
       end
       
       it "basic" do
-        db_params = params = {
+        db_params = {
                 :concurrent_flag => true,
                 :replace_flag => true,
                 :fields_term_by => "\t",
