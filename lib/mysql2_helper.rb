@@ -1,4 +1,6 @@
-require 'mysql2'
+require "mysql2"
+
+require_relative "mysql2_helper/gen/gen_load_data"
 
 class Mysql2Helper
   
@@ -28,8 +30,44 @@ class Mysql2Helper
     self.connect
   end
   
-  def import_csv
+  def import_csv(params = {})
+    final_params = self.inject_db_params_with_filename(params)
+    gld = GenLoadData.create(final_params)
     
+    # run the query if its returns a string and not false
+    if gld != false
+      @client.query(gld)
+    else
+      return false
+    end
+  end
+  
+  # helper methods
+  ############################################################################
+  
+  # inject_db_params_with_filename
+  #
+  # injects the db_name, table_name, and file_name
+  # into the param hash.
+  def inject_db_params_with_filename(params = {})
+    injected_params = params
+    injected_params[:db_name] = @db_Name
+    injected_params[:table_name] = @table_name
+    injected_params[:filename] = @filename
+    
+    return injected_params
+  end
+  
+  # inject_db_params
+  #
+  # injects the db_name, table_name
+  # into the param hash.
+  def inject_db_params(params = {})
+    injected_params = params
+    injected_params[:db_name] = @db_Name
+    injected_params[:table_name] = @table_name
+    
+    return injected_params
   end
   
   # connections

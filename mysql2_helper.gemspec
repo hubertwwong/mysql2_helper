@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "A simple mysql2 helper for some common sql stuff."
   s.authors     = ["Hubert Wong"]
   s.email       = 'hubertwwong@gmail.com'
-  s.files       = ["lib/mysql2_helper.rb"]
+  s.files       = ["lib/mysql2_helper.rb", "lib/mysql2_helper/gen/gen_load_data.rb"]
   s.homepage    =
     'http://rubygems.org/gems/hola'
   s.license       = 'MIT'

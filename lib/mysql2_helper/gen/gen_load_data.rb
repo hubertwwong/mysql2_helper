@@ -2,25 +2,45 @@
 class GenLoadData
   
   # constructs the mysql string to insert the data
-  def create(params = {})
-    # make the params optional.
+  def self.create(params = {})
+    # make some of the params optional.
     params = {
-              filename: nil,
-              table_name: nil, 
+              low_priority_flag: nil,
+              concurrent_flag: nil,
+              local_flag: nil,
+              replace_flag: nil,
+              ignore_flag: nil,
               skip_num_lines: nil, 
-              term_fields_by: nil,
-              enclosed_by: nil,
-              term_line_by: nil,
-              col_names: nil
+              fields_term_by: nil,
+              fields_enclosed_by: nil,
+              fields_escaped_by: nil,
+              line_start_by: nil,
+              line_term_by: nil
              }.merge(params)
+    
+    
+    # load params into variables.
+    # ########################################################################
     
     filename = params.fetch(:filename)
     table_name = params.fetch(:table_name)
+    
+    # boolean values
+    low_priority_flag = params.fetch(:low_priority_flag)
+    concurrent_flag = params.fetch(:concurrent_flag)
+    local_flag = params.fetch(:local_flag)
+    replace_flag = params.fetch(:replace_flag)
+    ignore_flag = params.fetch(:ignore_flag)
+    
+    fields_term_by = params.fetch(:fields_term_by)
+    fields_enclosed_by = params.fetch(:fields_enclosed_by)
+    fields_escaped_by = params.fetch(:fields_escaped_by)
+    
+    line_start_by = params.fetch(:line_start_by)
+    line_term_by = params.fetch(:line_term_by)
+    
     skip_num_lines = params.fetch(:skip_num_lines)
-    term_fields_by = params.fetch(:term_fields_by)
-    enclosed_by = params.fetch(:enclosed_by)
-    escaped_by = params.fetch(:escaped_by)
-    term_line_by = params.fetch(:term_line_by)
+    
     col_names = params.fetch(:col_names)
     
     # INTIAL CHECKS
@@ -38,7 +58,7 @@ class GenLoadData
       return false
     end
     
-    if term_line_by == nil
+    if line_term_by == nil
       puts "error: define line terminator. usually \n or \r\n"
       return false
     end
@@ -46,31 +66,63 @@ class GenLoadData
     # construct the db string.
     
     # initial sql statemet
-    db_str = "LOAD DATA INFILE '" + filename + 
-             "' INTO TABLE " + table_name
+    db_str = "LOAD DATA"
     
-    # usually csv are terminated by commas
-    # but you can use other termination symbols.
-    if term_fields_by != nil
-      db_str = db_str + " FIELDS TERMINATED BY '" + 
-               term_fields_by + "'"
+    # low priority, concurrent, local
+    if low_priority_flag == true
+      db_str = db_str + " LOW_PRIORITY"
+    elsif concurrent_flag == true
+      db_str = db_str + " CONCURRENT"
     end
     
-    if enclosed_by != nil
+    # file name
+    db_str = db_str + " INFILE '" + filename + "'"
+    
+    # replace / ignore
+    if replace_flag == true
+      db_str = db_str + " REPLACE"
+    elsif ignore_flag == true
+      db_str = db_str + " IGNORE"
+    end
+    
+    # into table         
+    db_str = db_str + " INTO TABLE " + table_name
+    
+    # checks if the optional args fields are used.
+    # if its is, add " FIELDS"
+    if fields_term_by != nil || fields_enclosed_by != nil || fields_escaped_by != nil
+      db_str = db_str + " FIELDS"
+    end
+    
+    if fields_term_by != nil
+      db_str = db_str + " TERMINATED BY '" + 
+               fields_term_by + "'"
+    end
+    
+    if fields_enclosed_by != nil
       db_str = db_str + " ENCLOSED BY '" + 
-               enclosed_by + "'"
+               fields_enclosed_by + "'"
     end
     
-    if escaped_by != nil
+    if fields_escaped_by != nil
       db_str = db_str + " ESCAPED BY '" + 
-               escaped_by + "'"
+               fields_escaped_by + "'"
     end
     
-    # windows and unix have different line terminations.
-    # you need to specify this.
-    if term_line_by != nil
-      db_str = db_str + " LINES TERMINATED BY '" + 
-               term_line_by + "'"
+    # check if lines start by or end by is used
+    # if it is, add " LINES"
+    if line_start_by != nil || line_term_by != nil
+      db_str = db_str + " LINES"
+    end
+    
+    if line_start_by != nil
+      db_str = db_str + " STARTING BY '" + 
+               line_start_by + "'"
+    end
+    
+    if line_term_by != nil
+      db_str = db_str + " TERMINATED BY '" + 
+               line_term_by + "'"
     end
     
     # if you have titles, add a number to skip those lines
@@ -90,6 +142,10 @@ class GenLoadData
                col_names + ")"
     end
     
+    # add the semi colon
+    db_str = db_str + ";"
+    
+    # debug stuff
     puts "> db query to write"
     puts db_str
     puts ""
