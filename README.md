@@ -27,6 +27,9 @@ result = @db.import_csv(@db_params)
 
 These are the options that you can pass in to the param hash. 
 They should correspond to the LOAD DATA function.
+Options with the flag suffix should be boolean values.
+All other options should take strings with the exception of skip_num_lines 
+which takes an int.
 
 filename
 table_name
