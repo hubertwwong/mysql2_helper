@@ -1,3 +1,5 @@
+require 'pathname'
+
 # a string generating class so you can load into db.
 class GenLoadData
   
