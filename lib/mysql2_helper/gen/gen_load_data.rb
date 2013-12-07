@@ -23,7 +23,7 @@ class GenLoadData
              }.merge(init_params)
     
     # load params into variables.
-    # ########################################################################
+    # ###########################
     
     filename = params.fetch(:filename)
     table_name = params.fetch(:table_name)
@@ -67,6 +67,7 @@ class GenLoadData
     end
     
     # construct the db string.
+    ##########################
     
     # initial sql statemet
     db_str = "LOAD DATA"
@@ -91,37 +92,37 @@ class GenLoadData
     # if its is, add " FIELDS"
     if fields_term_by != nil || fields_enclosed_by != nil || fields_escaped_by != nil
       db_str = db_str + " FIELDS"
-    end
-    
-    if fields_term_by != nil
-      db_str = db_str + " TERMINATED BY '" + 
-               fields_term_by + "'"
-    end
-    
-    if fields_enclosed_by != nil
-      db_str = db_str + " ENCLOSED BY '" + 
-               fields_enclosed_by + "'"
-    end
-    
-    if fields_escaped_by != nil
-      db_str = db_str + " ESCAPED BY '" + 
-               fields_escaped_by + "'"
+      
+      if fields_term_by != nil
+        db_str = db_str + " TERMINATED BY '" + 
+                 fields_term_by + "'"
+      end
+      
+      if fields_enclosed_by != nil
+        db_str = db_str + " ENCLOSED BY '" + 
+                 fields_enclosed_by + "'"
+      end
+      
+      if fields_escaped_by != nil
+        db_str = db_str + " ESCAPED BY '" + 
+                 fields_escaped_by + "'"
+      end  
     end
     
     # check if lines start by or end by is used
     # if it is, add " LINES"
     if line_start_by != nil || line_term_by != nil
       db_str = db_str + " LINES"
-    end
-    
-    if line_start_by != nil
-      db_str = db_str + " STARTING BY '" + 
-               line_start_by + "'"
-    end
-    
-    if line_term_by != nil
-      db_str = db_str + " TERMINATED BY '" + 
-               line_term_by + "'"
+      
+      if line_start_by != nil
+        db_str = db_str + " STARTING BY '" + 
+                 line_start_by + "'"
+      end
+      
+      if line_term_by != nil
+        db_str = db_str + " TERMINATED BY '" + 
+                 line_term_by + "'"
+      end
     end
     
     # if you have titles, add a number to skip those lines

@@ -65,6 +65,15 @@ class GenString
     end
   end
   
+  # encloses a string with a open and close parenthese.
+  def self.enclose_with_single_quote(some_str)
+    if some_str != nil
+      return "'" + some_str.to_s + "'"
+    else
+      return nil
+    end
+  end
+  
   # convert array to string
   ############################################################################
   

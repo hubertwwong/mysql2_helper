@@ -84,6 +84,20 @@ describe GenString do
         expect(result).to eq("\(foo\)")
       end
     end
+    
+    describe "enclose_with_single_quote" do
+      it "nil" do
+        params = nil
+        result = GenString.enclose_with_single_quote(params)
+        expect(result).to eq(nil)
+      end
+      
+      it "foo" do
+        params = "foo"
+        result = GenString.enclose_with_single_quote(params)
+        expect(result).to eq("'foo'")
+      end
+    end
   end
   
   describe "array to string" do
