@@ -55,6 +55,18 @@ describe GenString do
         result = GenString.bool_first(params)
         expect(result).to eq("bar")
       end
+      
+      it "[[gahsf ,foo]]" do
+        params = [["gahsf", "foo"]]
+        result = GenString.bool_first(params)
+        expect(result).to eq(nil)
+      end
+      
+      it "[[nil ,foo]]" do
+        params = [[nil, "foo"]]
+        result = GenString.bool_first(params)
+        expect(result).to eq(nil)
+      end
     end
   end
   

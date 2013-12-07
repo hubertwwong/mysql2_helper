@@ -6,7 +6,7 @@ require_relative "gen_string"
 class GenLoadData
   
   # constructs the mysql string to insert the data
-  def self.create(params = {})
+  def self.create(init_params = {})
     # make some of the params optional.
     params = {
               low_priority_flag: nil,
@@ -20,8 +20,7 @@ class GenLoadData
               fields_escaped_by: nil,
               line_start_by: nil,
               line_term_by: nil
-             }.merge(params)
-    
+             }.merge(init_params)
     
     # load params into variables.
     # ########################################################################
@@ -73,27 +72,17 @@ class GenLoadData
     db_str = "LOAD DATA"
     
     # low priority, concurrent, local
-    if low_priority_flag == true
-      db_str = db_str + " LOW_PRIORITY"
-    elsif concurrent_flag == true
-      db_str = db_str + " CONCURRENT"
-    end
+    bool_params = [[low_priority_flag, " LOW_PRIORITY"], [concurrent_flag, " CONCURRENT"]]
+    result_str = GenString.bool_first(bool_params)
+    db_str = GenString.append_not_nil(db_str, result_str)
     
     # file name
     db_str = db_str + " INFILE '" + filename + "'"
     
     # replace / ignore
-    params = [[replace_flag, " REPLACE"], [ignore_flag], " IGNORE"]
-    result = GenString.bool_first(params)
-    db_str = GenString.append_not_nil(db_str, result)
-    #if result != nil
-    #  db_str = db_str + GenString.bool_first(params)
-    #end
-    #if replace_flag == true
-    #  db_str = db_str + " REPLACE"
-    #elsif ignore_flag == true
-    #  db_str = db_str + " IGNORE"
-    #end
+    bool_params = [[replace_flag, " REPLACE"], [ignore_flag], " IGNORE"]
+    result_str = GenString.bool_first(bool_params)
+    db_str = GenString.append_not_nil(db_str, result_str)
     
     # into table         
     db_str = db_str + " INTO TABLE " + table_name
