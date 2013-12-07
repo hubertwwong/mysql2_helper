@@ -30,7 +30,7 @@ class Mysql2Helper
     self.connect
   end
   
-  def import_csv(params = {})
+  def load_data(params = {})
     final_params = self.inject_db_params_with_filename(params)
     gld = GenLoadData.create(final_params)
     
@@ -49,6 +49,7 @@ class Mysql2Helper
   #
   # injects the db_name, table_name, and file_name
   # into the param hash.
+  # used for the string generation functions.
   def inject_db_params_with_filename(params = {})
     injected_params = params
     injected_params[:db_name] = @db_Name
@@ -62,6 +63,7 @@ class Mysql2Helper
   #
   # injects the db_name, table_name
   # into the param hash.
+  # used for the string generation functions.
   def inject_db_params(params = {})
     injected_params = params
     injected_params[:db_name] = @db_Name

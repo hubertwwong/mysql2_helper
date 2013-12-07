@@ -134,15 +134,29 @@ class GenLoadData
     end
     
     # define the column names that you want to write to the db.
-    # the actual names should match the db names.
+    # the actual names should match the ones in the db.
     # if you dont want a column to be written, use @dummy.
     #
+    # pass this as an array of strings.
+    #
     # example
-    # "@dummy, name, description"
-    if col_names != nil
-      db_str = db_str + " (" + 
-               col_names + ")"
+    # "[@dummy, name, description]"
+    if col_names != nil && col_names.length > 0
+      # enter the first arg and the (
+      db_str = db_str + " (" + col_names[0]
+      
+      # enter the values 2-n
+      col_names.each_with_index do |col_name, i|
+        if i != 0
+          db_str = db_str + ", " + col_name
+        end
+      end
+      
+      # closing brace
+      db_str = db_str + ")"
     end
+    
+    
     
     # add the semi colon
     db_str = db_str + ";"
