@@ -11,6 +11,48 @@ class GenString
     return self.enclose_with_paren(comma_str)
   end
   
+  # conditional strings.
+  ############################################################################
+  
+  # appends a string if the argument isn't nil.
+  # if it is nil, just return the main string.
+  def self.append_not_nil(main_str, str_to_append)
+    if main_str != nil && str_to_append != nil
+      return main_str + str_to_append
+    elsif main_str != nil
+      return main_str
+    else
+      return nil
+    end  
+  end
+  
+  # returns a string that the user passes for the first true value.
+  # saves you the hasssle of if elsing bunch of true false flags.
+  # takes a double array.
+  # returns a nil if there is an error.
+  #
+  # input:
+  #   [[false, " bar"]. [true " foo"]]
+  # output:
+  #   " foo"
+  def self.bool_first(array_params)
+    if array_params == nil || !array_params.kind_of?(Array)
+      return nil
+    elsif
+      array_params.each do |cur_param|
+        if !array_params.kind_of?(Array)
+          return nil
+        elsif cur_param[0] == true
+          return cur_param[1]
+        end
+      end
+    end
+    
+    # if it gets here, it didn't find a result.
+    # return nil.
+    return nil
+  end
+  
   # enclosing strings.
   ############################################################################
   
@@ -28,11 +70,10 @@ class GenString
   
   # covert an array of strings to a comma string.
   # 
-  # so....
   # input:
-  # ["foo", "bar", "baz"]
+  #   ["foo", "bar", "baz"]
   # output:
-  # "foo, bar, baz"
+  #   "foo, bar, baz"
   def self.array_to_comma_str(array_params)
     if array_params == nil
       return nil

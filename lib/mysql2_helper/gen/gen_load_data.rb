@@ -83,11 +83,17 @@ class GenLoadData
     db_str = db_str + " INFILE '" + filename + "'"
     
     # replace / ignore
-    if replace_flag == true
-      db_str = db_str + " REPLACE"
-    elsif ignore_flag == true
-      db_str = db_str + " IGNORE"
-    end
+    params = [[replace_flag, " REPLACE"], [ignore_flag], " IGNORE"]
+    result = GenString.bool_first(params)
+    db_str = GenString.append_not_nil(db_str, result)
+    #if result != nil
+    #  db_str = db_str + GenString.bool_first(params)
+    #end
+    #if replace_flag == true
+    #  db_str = db_str + " REPLACE"
+    #elsif ignore_flag == true
+    #  db_str = db_str + " IGNORE"
+    #end
     
     # into table         
     db_str = db_str + " INTO TABLE " + table_name

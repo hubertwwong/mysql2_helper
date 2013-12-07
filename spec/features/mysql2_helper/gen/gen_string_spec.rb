@@ -2,6 +2,62 @@ require_relative "../../../../lib/mysql2_helper/gen/gen_string"
 
 describe GenString do
   
+  describe "conditional" do
+    describe "append_not_nil" do
+      it "nil nil" do
+        result = GenString.append_not_nil(nil, nil)
+        expect(result).to eq(nil)
+      end
+      
+      it "nil str" do
+        result = GenString.append_not_nil(nil, "foo")
+        expect(result).to eq(nil)
+      end
+      
+      it "str nil" do
+        result = GenString.append_not_nil("foo", nil)
+        expect(result).to eq("foo")
+      end
+      
+      it "str str" do
+        result = GenString.append_not_nil("foo", "foo")
+        expect(result).to eq("foofoo")
+      end
+    end
+    
+    describe "bool_first" do
+      it "nil" do
+        params = nil
+        result = GenString.bool_first(params)
+        expect(result).to eq(nil)
+      end
+      
+      it "foo" do
+        params = "foo"
+        result = GenString.bool_first(params)
+        expect(result).to eq(nil)
+      end
+      
+      it "[[true,foo]]" do
+        params = [[true, "foo"]]
+        result = GenString.bool_first(params)
+        expect(result).to eq("foo")
+      end
+      
+      it "[[false ,foo]]" do
+        params = [[false, "foo"]]
+        result = GenString.bool_first(params)
+        expect(result).to eq(nil)
+      end
+      
+      it "[[false ,foo], [true ,foo]]" do
+        params = [[false, "foo"], [true, "bar"]]
+        result = GenString.bool_first(params)
+        expect(result).to eq("bar")
+      end
+    end
+  end
+  
   describe "enclose" do
     describe "enclose_with_paren" do
       it "nil" do
