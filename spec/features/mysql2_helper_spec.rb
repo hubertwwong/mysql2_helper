@@ -51,8 +51,8 @@ describe Mysql2Helper do
                 :fields_term_by => "\t",
                 :line_term_by => "\r\n",
                 :skip_num_lines => 1,
-                :col_names => "@dummy, name, description"}
-        result = @db.import_csv(db_params)
+                :col_names => ["@dummy", "name", "description"]}
+        result = @db.load_data(db_params)
         expect(result).not_to eq(false)
       end
     end

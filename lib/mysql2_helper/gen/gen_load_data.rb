@@ -1,4 +1,6 @@
-require 'pathname'
+require "pathname"
+
+require_relative "gen_string"
 
 # a string generating class so you can load into db.
 class GenLoadData
@@ -141,22 +143,7 @@ class GenLoadData
     #
     # example
     # "[@dummy, name, description]"
-    if col_names != nil && col_names.length > 0
-      # enter the first arg and the (
-      db_str = db_str + " (" + col_names[0]
-      
-      # enter the values 2-n
-      col_names.each_with_index do |col_name, i|
-        if i != 0
-          db_str = db_str + ", " + col_name
-        end
-      end
-      
-      # closing brace
-      db_str = db_str + ")"
-    end
-    
-    
+    db_str = db_str + " " + GenString.paren_array_to_comma_str(col_names)
     
     # add the semi colon
     db_str = db_str + ";"

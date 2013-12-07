@@ -7,7 +7,7 @@ describe GenLoadData do
       params = {:filename => "/home/user/fleet.csv",
                 :table_name => "space_ship",
                 :line_term_by => "\r\n",
-                :col_names => "@dummy, name, description"}
+                :col_names => ["@dummy", "name", "description"]}
       final_str = "LOAD DATA INFILE '/home/user/fleet.csv' INTO TABLE space_ship LINES TERMINATED BY '\r\n' (@dummy, name, description);"
       
       result = GenLoadData.create params
@@ -23,7 +23,7 @@ describe GenLoadData do
                 :fields_enclosed_by => "\"",
                 :line_term_by => "\r\n",
                 :skip_num_lines => 1,
-                :col_names => "@dummy, name, description"}
+                :col_names => ["@dummy", "name", "description"]}
       final_str = "LOAD DATA CONCURRENT INFILE '/home/user/fleet.csv' REPLACE INTO TABLE space_ship FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (@dummy, name, description);"
       
       result = GenLoadData.create params

@@ -2,10 +2,14 @@
 # stuff like create a string from a array of strings.
 class GenString
   
-  # compond func.
+  # compound functions.
   ############################################################################
   
-  
+  # converts an array of sttring to a paren closed one.
+  def self.paren_array_to_comma_str(array_params)
+    comma_str = self.array_to_comma_str(array_params)
+    return self.enclose_with_paren(comma_str)
+  end
   
   # enclosing strings.
   ############################################################################
