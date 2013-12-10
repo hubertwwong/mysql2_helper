@@ -15,12 +15,16 @@ Not really complete so use at your own risk.
 @db = Mysql2Helper.new(@params)
 
 #### 2. call import_csv. this will read the csv file and load the data into the table.
-@db_params = {:concurrent_flag => true,
-              :replace_flag => true,
-              :fields_term_by => "\t",
-              :line_term_by => "\r\n",
-              :skip_num_lines => 1,
-              :col_names => "@dummy, name, description"}
+@db_params = {:filename => "/home/user/fleet.csv",
+                :concurrent_flag => true,
+                :replace_flag => true,
+                :table_name => "space_ship",
+                :fields_term_by => "\t",
+                :fields_enclosed_by => "\"",
+                :line_term_by => "\r\n",
+                :skip_num_lines => 1,
+                :col_names => ["@dummy", "name", "description"],
+                :set_col_names => ["column2='dummy'"]}
 result = @db.import_csv(@db_params)
 
 ### CSV IMPORT OPTIONS
@@ -45,4 +49,4 @@ line_start_by
 line_term_by
 skip_num_lines    
 col_names
-    
+set_col_names    
