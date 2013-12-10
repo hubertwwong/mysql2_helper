@@ -88,7 +88,7 @@ class Mysql2Helper
   # might need to call this if the one in the mysql2 client
   # is not fast enough.
   def close
-    @client
+    @client.close
   end
   
   # TEMP

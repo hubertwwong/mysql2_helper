@@ -19,7 +19,8 @@ class GenLoadData
               fields_enclosed_by: nil,
               fields_escaped_by: nil,
               line_start_by: nil,
-              line_term_by: nil
+              line_term_by: nil,
+              set_col_names: nil
              }.merge(init_params)
     
     # load params into variables.
@@ -45,7 +46,7 @@ class GenLoadData
     skip_num_lines = params.fetch(:skip_num_lines)
     
     col_names = params.fetch(:col_names)
-    
+    set_col_names = params.fetch(:set_col_names)
     # INTIAL CHECKS
     
     # check if path exist.
@@ -131,15 +132,23 @@ class GenLoadData
       db_str = db_str + " IGNORE " + skip_num_lines.to_s + " LINES"
     end
     
-    # define the column names that you want to write to the db.
-    # the actual names should match the ones in the db.
-    # if you dont want a column to be written, use @dummy.
-    #
-    # pass this as an array of strings.
-    #
-    # example
-    # "[@dummy, name, description]"
+    # col names
+    # define the column names db that correspond csv col
+    # if don't wan't to use the column in the csv, use @dummy.
+    # 
+    # example:
+    #   ["@dummy", "foo", "bar"]
     db_str = db_str + " " + GenString.paren_array_to_comma_str(col_names)
+    
+    # set col names
+    # 
+    # use this if you want to modify the CSV input in some way before
+    # you write it to the db.
+    if set_col_names != nil
+      db_str = db_str + " SET"
+      result_str = GenString.array_to_comma_str(set_col_names)
+      db_str = db_str + " " + result_str
+    end
     
     # add the semi colon
     db_str = db_str + ";"
