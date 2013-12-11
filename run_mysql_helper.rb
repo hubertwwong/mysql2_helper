@@ -16,5 +16,6 @@ puts ms.hello
               :fields_term_by => "\t",
               :line_term_by => "\r\n",
               :skip_num_lines => 1,
-              :col_names => "@dummy, name, description"}
+              :col_names => ["@dummy", "name", "description"],
+              :set_col_names => ["name='zzzz'"]}
 result = @db.load_data(@db_params)
