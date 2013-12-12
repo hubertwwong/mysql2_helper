@@ -37,6 +37,7 @@ class Mysql2Helper
     # run the query if its returns a string and not false
     if gld != false
       @client.query(gld)
+      return true
     else
       return false
     end
