@@ -44,7 +44,7 @@ describe Mysql2Helper do
         @db = Mysql2Helper.new(@params)
       end
       
-      xit "basic" do
+      it "basic" do
         db_params = {
                 :concurrent_flag => true,
                 :replace_flag => true,
@@ -53,7 +53,7 @@ describe Mysql2Helper do
                 :skip_num_lines => 1,
                 :col_names => ["@dummy", "name", "description"]}
         result = @db.load_data(db_params)
-        expect(result).not_to eq(false)
+        expect(result).to eq(true)
       end
       
       it "basic using set" do
@@ -66,7 +66,7 @@ describe Mysql2Helper do
                 :col_names => ["@dummy", "name", "description"],
                 :set_col_names => ["name='dummy dummy'"]}
         result = @db.load_data(db_params)
-        expect(result).not_to eq(false)
+        expect(result).to eq(true)
       end
     end
   end
