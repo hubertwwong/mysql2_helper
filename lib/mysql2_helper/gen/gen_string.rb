@@ -16,8 +16,10 @@ class GenString
   
   # appends a string if the argument isn't nil.
   # if it is nil, just return the main string.
-  def self.append_not_nil(main_str, str_to_append)
-    if main_str != nil && str_to_append != nil
+  def self.append_not_nil(main_str, str_to_append, space_flag=false)
+    if main_str != nil && str_to_append != nil && space_flag
+      return main_str + " " + str_to_append
+    elsif main_str != nil && str_to_append != nil
       return main_str + str_to_append
     elsif main_str != nil
       return main_str
@@ -29,8 +31,10 @@ class GenString
   # NOT TESTED.
   # appends a string if the argument is true.
   # if it is nil, just return the main string.
-  def self.append_if_true(main_str, str_to_append, bool_value)
-    if main_str != nil && str_to_append != nil && bool_value
+  def self.append_if_true(main_str, str_to_append, bool_value, space_flag=false)
+    if main_str != nil && str_to_append != nil && bool_value && space_flag
+      return main_str + " " + str_to_append
+    elsif main_str != nil && str_to_append != nil && bool_value
       return main_str + str_to_append
     elsif main_str != nil
       return main_str
