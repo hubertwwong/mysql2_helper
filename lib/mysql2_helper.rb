@@ -35,7 +35,7 @@ class Mysql2Helper
     gld = GenLoadData.create(final_params)
     
     # run the query if its returns a string and not false
-    if gld != false
+    if gld != nil
       @client.query(gld)
       puts "query successful"
       return true

@@ -6,7 +6,7 @@ require_relative "gen_string"
 class GenLoadData
   
   # constructs the mysql string to insert the data
-  def self.create(init_params = {})
+  def self.create(params = {})
     # make some of the params optional.
     params = {
               low_priority_flag: nil,
@@ -21,7 +21,7 @@ class GenLoadData
               line_start_by: nil,
               line_term_by: nil,
               set_col_names: nil
-             }.merge(init_params)
+             }.merge(params)
     
     # load params into variables.
     # ###########################
@@ -54,17 +54,17 @@ class GenLoadData
     pn = Pathname.new filename
     if pn.exist? == false
       puts "error: csv does not exist."
-      return false
+      return nil
     end
     
     if col_names == nil
       puts "error: need to define column names"
-      return false
+      return nil
     end
     
     if line_term_by == nil
       puts "error: define line terminator. usually \n or \r\n"
-      return false
+      return nil
     end
     
     # construct the db string.
@@ -154,9 +154,7 @@ class GenLoadData
     db_str = db_str + ";"
     
     # debug stuff
-    puts "> db query to write"
-    puts db_str
-    puts ""
+    GenString.pp db_str
     
     return db_str
   end

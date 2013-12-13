@@ -25,6 +25,20 @@ class GenString
       return nil
     end  
   end
+
+  # NOT TESTED.
+  # appends a string if the argument is true.
+  # if it is nil, just return the main string.
+  def self.append_if_true(main_str, str_to_append, bool_value)
+    if main_str != nil && str_to_append != nil && bool_value
+      return main_str + str_to_append
+    elsif main_str != nil
+      return main_str
+    else
+      return nil
+    end  
+  end
+
   
   # returns a string that the user passes for the first true value.
   # saves you the hasssle of if elsing bunch of true false flags.
@@ -108,5 +122,10 @@ class GenString
     # return nil. user didn't enter a correct value.
     return nil
   end
-   
+  
+  # a simple debug statement.
+  def self.pp(db_str)
+    puts ">> gen_str [" + db_str + "]"
+  end
+  
 end

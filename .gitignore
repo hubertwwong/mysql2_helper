@@ -3,3 +3,4 @@ bin/mysql2_helper-0.0.1.gem
 temp/output.txt
 bin
 temp
+Gemfile.lock
