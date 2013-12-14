@@ -1,6 +1,9 @@
 require "mysql2"
 
 require_relative "mysql2_helper/gen/gen_load_data"
+require_relative "mysql2_helper/gen/gen_table"
+require_relative "mysql2_helper/gen/gen_update"
+require_relative "mysql2_helper/gen/gen_string"
 
 class Mysql2Helper
   
@@ -30,13 +33,43 @@ class Mysql2Helper
     self.connect
   end
   
+  # LOAD DATA
+  ############################################################################
+  
   def load_data(params = {})
     final_params = self.inject_db_params_with_filename(params)
     gld = GenLoadData.create(final_params)
-    
-    # run the query if its returns a string and not false
-    if gld != nil
-      @client.query(gld)
+    return self.run_query(gld)
+  end
+  
+  # TABLE
+  ############################################################################
+  
+  def create_clone(params = {})
+    gld = GenTable.create_clone(params)
+    return self.run_query(gld)
+  end
+  
+  def drop(params = {})
+    gld = GenTable.drop(params)
+    return self.run_query(gld)
+  end
+  
+  # update
+  ############################################################################
+  
+  def update_multi(params = {})
+    gld = GenUpdate.update_multi(params)
+    return self.run_query(gld)
+  end
+  
+  # helper methods
+  ############################################################################
+  
+  # just runs a query if the string isn't nil
+  def run_query(sql_string)
+    if sql_string != nil
+      @client.query(sql_string)
       puts "query successful"
       return true
     else
@@ -44,9 +77,6 @@ class Mysql2Helper
       return false
     end
   end
-  
-  # helper methods
-  ############################################################################
   
   # inject_db_params_with_filename
   #

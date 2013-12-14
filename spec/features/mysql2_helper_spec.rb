@@ -2,12 +2,12 @@ require_relative "../../lib/mysql2_helper"
 
 describe Mysql2Helper do
   
-  describe "import_csv" do
+  describe "load_data" do
     describe "instance variables" do
       before(:each) do
         @params = {:url => "localhost", :user => "root", 
-                  :password => "password", :db_name => "space_ship",
-                  :table_name => "foo", :filename => "foo.txt"}
+                   :password => "password", :db_name => "space_ship",
+                   :table_name => "foo", :filename => "foo.txt"}
         @db = Mysql2Helper.new(@params)
       end
       
@@ -36,43 +36,95 @@ describe Mysql2Helper do
       end
     end
     
-    describe "import_csv" do
+    describe "create" do
       before(:each) do
         @params = {:url => "localhost", :user => "root", 
-                  :password => "password", :db_name => "space_ship",
-                  :table_name => "fleet", :filename => "/home/user/fleet.csv"}
+                   :password => "password", :db_name => "space_ship",
+                   :table_name => "fleet", :filename => "/home/user/fleet.csv"}
         @db = Mysql2Helper.new(@params)
       end
       
-      it "basic" do
-        db_params = {
-                :concurrent_flag => true,
-                :replace_flag => true,
-                :fields_term_by => "\t",
-                :line_term_by => "\r\n",
-                :skip_num_lines => 1,
-                :col_names => ["@dummy", "name", "description"]}
+      xit "basic" do
+        db_params = {:concurrent_flag => true,
+                     :replace_flag => true,
+                     :fields_term_by => "\t",
+                     :line_term_by => "\r\n",
+                     :skip_num_lines => 1,
+                     :col_names => ["@dummy", "name", "description"]}
         result = @db.load_data(db_params)
         expect(result).to eq(true)
       end
       
-      it "basic using set" do
-        db_params = {
-                :concurrent_flag => true,
-                :replace_flag => true,
-                :fields_term_by => "\t",
-                :line_term_by => "\r\n",
-                :skip_num_lines => 1,
-                :col_names => ["@dummy", "name", "description"],
-                :set_col_names => ["name='dummy dummy'"]}
+      xit "basic using set" do
+        db_params = {:concurrent_flag => true,
+                     :replace_flag => true,
+                     :fields_term_by => "\t",
+                     :line_term_by => "\r\n",
+                     :skip_num_lines => 1,
+                     :col_names => ["@dummy", "name", "description"],
+                     :set_col_names => ["name='dummy dummy'"]}
         result = @db.load_data(db_params)
         expect(result).to eq(true)
       end
     end
   end
   
+  describe "table" do
+    describe "create_clone" do
+      before(:each) do
+        @params = {:url => "localhost", :user => "root", 
+                  :password => "password", :db_name => "space_ship"}
+        @db = Mysql2Helper.new(@params)
+      end
+      
+      xit "basic" do
+        db_params = {:tbl_name => "foo",
+                     :old_tbl_name =>"fleet"}
+        result = @db.create_clone(db_params)
+        expect(result).to eq(true)
+      end
+    end
+    
+    describe "drop" do
+      before(:each) do
+        @params = {:url => "localhost", :user => "root", 
+                  :password => "password", :db_name => "space_ship"}
+        @db = Mysql2Helper.new(@params)
+      end
+      
+      xit "basic" do
+        db_params = {:tbl_name => "foo"}
+        result = @db.drop(db_params)
+        expect(result).to eq(true)
+      end
+    end
+  end
+  
+  describe "update" do
+    describe "update_multi" do
+      before(:each) do
+        @params = {:url => "localhost", :user => "root", 
+                  :password => "password", :db_name => "space_ship"}
+        @db = Mysql2Helper.new(@params)
+      end
+      
+      # testing creating a teep table and cloning it.
+      it "basic" do
+        #db_params = {:tbl_name => "foo",
+        #             :old_tbl_name =>"fleet"}
+        #result = @db.create_clone(db_params)
+        
+        db_params = {:tbl_ref => "fleet f LEFT JOIN foo g ON f.name=g.name",
+                     :set_ref => "g.description=f.description"}
+        result = @db.update_multi(db_params)
+        
+        expect(result).to eq(true)
+      end
+    end
+  end
+  
   describe "hello" do
-    it "should return hello" do
+    xit "should return hello" do
       ms = Mysql2Helper.new
       expect(ms.hello).to eq('hello')
     end
