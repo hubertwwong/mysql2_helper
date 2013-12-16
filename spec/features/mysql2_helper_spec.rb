@@ -114,7 +114,7 @@ describe Mysql2Helper do
         #             :old_tbl_name =>"fleet"}
         #result = @db.create_clone(db_params)
         
-        db_params = {:tbl_ref => "fleet f LEFT JOIN foo g ON f.name=g.name",
+        db_params = {:tbl_ref => "fleet f LEFT JOIN foo g ON (f.name=g.name AND f.name2=g.name2)",
                      :set_ref => "g.description=f.description"}
         result = @db.update_multi(db_params)
         

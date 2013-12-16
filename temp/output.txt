@@ -7,7 +7,7 @@
 .>> gen_str [DROP TEMPORARY TABLE foo;]
 .>> gen_str [DROP TABLE foo, bar;]
 .>> gen_str [UPDATE foo a, bar b SET a.name=b.name;]
-.......****>> gen_str [UPDATE fleet f LEFT JOIN foo g ON f.name=g.name SET g.description=f.description;]
+.......****>> gen_str [UPDATE fleet f LEFT JOIN foo g ON (f.name=g.name AND f.name2=g.name2) SET g.description=f.description;]
 query successful
 .*
 
@@ -37,5 +37,5 @@ Pending:
     # Temporarily disabled with xit
     # ./spec/features/mysql2_helper_spec.rb:127
 
-Finished in 0.42284 seconds
+Finished in 0.33436 seconds
 42 examples, 0 failures, 8 pending
