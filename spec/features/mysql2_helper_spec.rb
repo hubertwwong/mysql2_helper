@@ -40,13 +40,14 @@ describe Mysql2Helper do
       before(:each) do
         @params = {:url => "localhost", :user => "root", 
                    :password => "password", :db_name => "space_ship",
-                   :table_name => "fleet", :filename => "/home/user/fleet.csv"}
+                   :table_name => "fleet", :filename => "/home/user/fleetSmall.csv"}
         @db = Mysql2Helper.new(@params)
       end
       
-      xit "basic" do
+      it "basic" do
         db_params = {:concurrent_flag => true,
                      :replace_flag => true,
+                     :local_flag => true,
                      :fields_term_by => "\t",
                      :line_term_by => "\r\n",
                      :skip_num_lines => 1,
@@ -109,7 +110,7 @@ describe Mysql2Helper do
       end
       
       # testing creating a teep table and cloning it.
-      it "basic" do
+      xit "basic" do
         #db_params = {:tbl_name => "foo",
         #             :old_tbl_name =>"fleet"}
         #result = @db.create_clone(db_params)
